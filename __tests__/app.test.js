@@ -28,13 +28,22 @@ describe('users', () => {
     });
   });
 
-
   it('POST /api/v1/sessions signs in an existing user', async () => {
     await request(app).post('/api/v1/users').send(mockUser);
     const res = await request(app)
       .post('/api/v1/users/sessions')
       .send({ email: 'test@example.com', password: '12345' });
     expect(res.status).toEqual(200);
+  });
+
+  it('DELETE /sessions deletes the user session', async () => {
+    const agent = request.agent(app);
+    await agent
+      .post('/api/v1/users/sessions')
+      .send({ email: 'test@example.com', password: '12345' });
+
+    const res = await agent.delete('/api/v1/users/sessions');
+    expect(res.status).toBe(204);
   });
 
   afterAll(() => {

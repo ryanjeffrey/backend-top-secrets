@@ -28,7 +28,7 @@ describe('users', () => {
     });
   });
 
-  it('POST /api/v1/sessions signs in an existing user', async () => {
+  it('POST /api/v1/users/sessions signs in an existing user', async () => {
     await request(app).post('/api/v1/users').send(mockUser);
     const res = await request(app)
       .post('/api/v1/users/sessions')
@@ -43,7 +43,8 @@ describe('users', () => {
       .send({ email: 'test@example.com', password: '12345' });
 
     const res = await agent.delete('/api/v1/users/sessions');
-    expect(res.status).toBe(204);
+    expect(res.status).toEqual(200);
+    expect(res.body.message).toBe('Signed out successfully!');
   });
 
   afterAll(() => {

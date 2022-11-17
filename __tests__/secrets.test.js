@@ -25,6 +25,11 @@ describe('secrets', () => {
     expect(res.status).toEqual(200);
   });
 
+  it('GET /api/v1/secrets should return a 401 if user is not logged in', async () => {
+    const res = await request(app).get('/api/v1/secrets');
+    expect(res.status).toEqual(401);
+  });
+
   it('POST /api/v1/secrets should post a new secret', async () => {
     await request(app).post('/api/v1/users').send(mockUser);
     const agent = request.agent(app);

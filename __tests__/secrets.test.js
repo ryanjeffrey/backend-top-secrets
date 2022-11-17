@@ -25,6 +25,19 @@ describe('secrets', () => {
     expect(res.status).toEqual(200);
   });
 
+  it('POST /api/v1/secrets should post a new secret', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    const agent = request.agent(app);
+    await agent
+      .post('/api/v1/users/sessions')
+      .send({ email: 'test@example.com', password: '12345' });
+    const res = await agent.post('/api/v1/secrets').send({
+      title: 'Justin Fields',
+      description: 'Justin Fields is the best QB in the NFL',
+    });
+    expect(res.status).toEqual(200);
+  });
+
   afterAll(() => {
     pool.end();
   });

@@ -8,11 +8,19 @@ describe('secrets', () => {
     return setup(pool);
   });
 
+  const mockUser = {
+    firstName: 'Test',
+    lastName: 'User',
+    email: 'test@example.com',
+    password: '12345',
+  };
+
   it('GET /api/v1/secrets should return a list of secrets when logged in', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
     const agent = request.agent(app);
     await agent
       .post('/api/v1/users/sessions')
-      .send({ email: 'test@testing.com', password: '12345' });
+      .send({ email: 'test@example.com', password: '12345' });
     const res = await agent.get('/api/v1/secrets');
     expect(res.status).toEqual(200);
   });
